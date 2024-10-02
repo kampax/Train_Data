@@ -1,0 +1,6 @@
+a---- cultural religious
+b-----fauna y flora
+c-----gastronomy
+d------nature
+e------Sports
+f-------Urban rural
