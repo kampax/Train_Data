@@ -1,49 +1,64 @@
 
 library(tidyverse)
 
-df1 <- read.delim("batch results/test1.csv", sep = ",")
+df1 <- read.delim("batch results/train_data2.csv", sep = ",")
 df1 <- df1 %>% select(Class)%>% rename(Class_new1 = Class)
 
-df2 <- read.delim("batch results/test2.csv", sep = ",")#output_gtp_def.csv
-df2 <- df2 %>% select(Class) %>% rename(Class_new2 = Class)
-
-
-df3 <- read.delim("batch results/output_rk.csv", sep = ",")
-df3<- df3 %>% select(Class) %>% rename(Class_rk = Class)
-
-df4 <- df2df3 <- read.delim("photos.csv", sep = ",")
+df2 <- read.delim("listado_imagenes.csv", sep = ",")
 
 #######
 #Unir## 
 ####### 
 
-datos <- bind_cols(df4, df3, df2, df1)
+df <- bind_cols(df2, df1)
 
-# Vector de categorías
-categories <- c("Cultural_Religious", "Fauna_Flora", "Gastronomy", "Nature", "Sports", "Urban_Rural")
+# Crear un diccionario para la clasificación
+diccionario_clases <- c(
+  "a" = "Cultural_Religious",
+  "b" = "Fauna_Flora",
+  "c" = "Gastronomy",
+  "d" = "Nature",
+  "e" = "Sports",
+  "f" = "Urban_Rural"
+)
 
-# Extraer la categoría presente en cada fila
-datos <- datos %>%
-  mutate(Rohaifa_category = str_extract(url, paste(categories, collapse = "|")))
+# Asignar la clase basada en la letra del nombre de la imagen
+df <- df %>%
+  mutate(Class_new2 = diccionario_clases[substr(url, nchar(base_url), nchar(base_url))])
+
+# Asignar la clase basada en la letra después de 'main/'
+df <- df %>%
+  mutate(Class_new2 = diccionario_clases[str_sub(url, str_locate(url, "main/")[,1] + 5, str_locate(url, "main/")[,1] + 5)])
+
+# Ver los resultados
+print(df)
+
+
+# # Vector de categorías
+# categories <- c("Cultural_Religious", "Fauna_Flora", "Gastronomy", "Nature", "Sports", "Urban_Rural")
 # 
+# # Extraer la categoría presente en cada fila
 # datos <- datos %>%
-#   mutate(coincidencia= ifelse(Rohaifa_category == Class_rk, "Coincide", "No coincide"))
+#   mutate(Rohaifa_category = str_extract(url, paste(categories, collapse = "|")))
+# # 
+# # datos <- datos %>%
+# #   mutate(coincidencia= ifelse(Rohaifa_category == Class_rk, "Coincide", "No coincide"))
+# # 
+# # # Count
+# # resumen_general <- datos %>%
+# #   group_by(coincidencia) %>%
+# #   summarise(total = n())
+# # 
+# datos <- datos %>%
+#   mutate(coincidencia2= ifelse(Rohaifa_category == Class_new2, "Coincide", "No coincide"))
 # 
 # # Count
-# resumen_general <- datos %>%
-#   group_by(coincidencia) %>%
+# resumen_general2 <- datos %>%
+#   group_by(coincidencia2) %>%
 #   summarise(total = n())
 # 
-datos <- datos %>%
-  mutate(coincidencia2= ifelse(Rohaifa_category == Class_new2, "Coincide", "No coincide"))
-
-# Count
-resumen_general2 <- datos %>%
-  group_by(coincidencia2) %>%
-  summarise(total = n())
-
-
-write.csv(datos, "results.csv")
+# 
+# write.csv(datos, "results.csv")
 
 
 ######################
