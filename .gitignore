@@ -2,5 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-.CN_batch_trainData
-.CN_batch_Rohaifa
+.CN_batch_trainData.ipynb
+.CN_test_batch_Rohaifa.ipynb
