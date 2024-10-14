@@ -1,0 +1,6 @@
+a---- Cultural_Religious
+b-----Fauna_Flora
+c-----Gastronomy
+d------Nature
+e------Sports
+f-------Urban_Rural
